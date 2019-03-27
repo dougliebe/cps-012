@@ -99,8 +99,8 @@ for (i in 2:8) wss[i] <- sum(kmeans(mydata,
 plot(1:8, wss, type="b", xlab="Number of Clusters",
      ylab="WGSS")
 
-result = kmeans(mydata,centers = 3)$cluster
-r = kmeans(mydata,centers = 3)$cluster %>%
+result = kmeans(mydata,centers = 4)$cluster
+r = kmeans(mydata,centers = 4)$cluster %>%
   data.frame() %>%
   rownames_to_column("Animal.ID") %>%
   rename(CG.group = '.') %>%
@@ -175,6 +175,20 @@ d3 <- d2 %>%
   ungroup() %>%
   data.frame() 
 
+#determining which diets to use
 d3$max <- max.col(-(replace(d3[,c("CG.mean.eff","SBM.mean.eff",'GH.mean.eff',"TMR.mean.eff")],
                           is.na(d3[,c("CG.mean.eff","SBM.mean.eff",'GH.mean.eff',"TMR.mean.eff")]),Inf)))
+mine = c(5096,
+         5175,
+         5225,
+         5293,
+         5476,
+         5558,
+         5587,
+         5611)
+d3 %>% filter(Animal.ID %in% mine) %>% group_by(Animal.ID) %>% summarise(max = unique(max))
+
 ggplot(d3, aes(max, color = max))+geom_histogram()
+
+# determining subrate
+ggplot(d3, aes(as.factor(SubRate), Eff.max, fill = as.factor(max)))+geom_boxplot()
