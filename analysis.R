@@ -31,7 +31,7 @@ for(i in difs) {
     out <- dt
   } else if(length(header1)<15) {
       out <- rbind(out, dt)
-  } else if(i == "./files/C-D 3 G-8 - 19-03-2019 14-22.dif") {
+  } else if(i == "./files/C-D 3 G-8 - 01-04-2019 14-22.dif") {
         lout <- dt
   } else {
           lout<-rbind(lout, dt)

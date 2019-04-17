@@ -5,7 +5,7 @@ library(cluster)
 library(fpc)
 
 cowxday <- d2 %>%
-  filter(Day >= 0, Day < 8) %>%
+  filter(Day >= 0, Day < 8, Animal.ID != 5463) %>%
   group_by(Animal.ID) %>%
   mutate(Eff.max = ifelse(is.na(Eff.max), lag(Eff.max,1), Eff.max)) %>%
   dcast(Animal.ID + Top.Dress ~ Day, mean, value.var = 'Eff.max') 
@@ -99,8 +99,8 @@ for (i in 2:8) wss[i] <- sum(kmeans(mydata,
 plot(1:8, wss, type="b", xlab="Number of Clusters",
      ylab="WGSS")
 
-result = kmeans(mydata,centers = 4)$cluster
-r = kmeans(mydata,centers = 4)$cluster %>%
+result = kmeans(mydata,centers = 3)$cluster
+r = kmeans(mydata,centers = 3)$cluster %>%
   data.frame() %>%
   rownames_to_column("Animal.ID") %>%
   rename(CG.group = '.') %>%
@@ -136,8 +136,8 @@ for (i in 2:8) wss[i] <- sum(kmeans(mydata,
 plot(1:8, wss, type="b", xlab="Number of Clusters",
      ylab="WGSS")
 
-result = kmeans(mydata,centers = 3)$cluster
-r = kmeans(mydata,centers = 3)$cluster %>%
+result = kmeans(mydata,centers = 4)$cluster
+r = kmeans(mydata,centers = 4)$cluster %>%
   data.frame() %>%
   rownames_to_column("Animal.ID") %>%
   rename(GH.group = '.') %>%
