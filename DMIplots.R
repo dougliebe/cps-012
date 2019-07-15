@@ -46,7 +46,7 @@ d2 %>%
   geom_line(aes(Day, eff.day), color = "blue", size = 1)+
   geom_line(aes(Day, target.day), color = "red", size = 1)+
   geom_line(aes(Day, ref.day), color = "green", size = 1)+
-  ylab("Percent")
+  ylab("Percent")+ylim(0,1)
 
 ######### Efficiency compared to Target Fed per Animal
 d2 %>%
@@ -81,3 +81,19 @@ d2 %>%
   geom_line(aes(Day, target.day), color = "red", size = 1)+
   geom_line(aes(Day, ref.day), color = "green", size = 1)+
   ylab("Percent") + facet_wrap(~Top.Dress)
+
+
+
+############ How often did we move a TMR adj up, just to move it back?
+############ about 27% of the time
+d2 %>%
+  group_by(Animal.ID) %>%
+  arrange(Date) %>%
+  mutate(up_yest = ifelse(TMR.Adjustment > lag(TMR.Adjustment,1),1,
+                          ifelse(TMR.Adjustment < lag(TMR.Adjustment),-1, 0))) %>%
+  mutate(went_back = ifelse((up_yest+lag(up_yest) != abs(up_yest)+abs(lag(up_yest))) &
+                              abs(up_yest)+abs(lag(up_yest)) == 2, 1, 0)) %>%
+  data.frame() %>%
+  summary()
+
+         
